@@ -1,9 +1,9 @@
 import numpy as np
 
-from spot_detector import ExampleQWidget, example_magic_widget
+from spot_detector._widget import example_function_widget #ExampleQWidget, example_magic_widget
 
 
-# make_napari_viewer is a pytest fixture that returns a napari viewer object
+"""# make_napari_viewer is a pytest fixture that returns a napari viewer object
 # capsys is a pytest fixture that captures stdout and stderr output streams
 def test_example_q_widget(make_napari_viewer, capsys):
     # make viewer and add an image layer using our fixture
@@ -33,4 +33,25 @@ def test_example_magic_widget(make_napari_viewer, capsys):
 
     # read captured output and check that it's as we expected
     captured = capsys.readouterr()
+    assert captured.out == f"you have selected {layer}\n"""
+
+def test_example_function_widget(make_napari_viewer, capsys):
+    viewer = make_napari_viewer()
+    layer = viewer.add_image(np.random.random((100, 100)))
+
+    # this time, our widget will be a MagicFactory or FunctionGui instance
+    my_widget_list = example_function_widget(layer)
+
+    # if we "call" this object, it'll execute our function
+    #[image_layer_data, detected_spots]
+    
+    if my_widget_list[0][2] == "Image":
+        pass
+        
+    if my_widget_list[1][2] == "Points":
+        pass
+
+    # read captured output and check that it's as we expected
+    captured = capsys.readouterr()
+    print(captured.out , f"you have selected {layer}\n")
     assert captured.out == f"you have selected {layer}\n"
